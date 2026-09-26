@@ -13,8 +13,8 @@ Ajuste aqui:
 import os
 
 # --- Geometria do padrão de calibração (tabuleiro de xadrez) ---
-BOARD_COLS = 9          # cantos internos na horizontal
-BOARD_ROWS = 6          # cantos internos na vertical
+BOARD_COLS = 11          # cantos internos na horizontal
+BOARD_ROWS = 7          # cantos internos na vertical
 SQUARE_SIZE_MM = 25.0   # tamanho de cada quadrado em mm (meça o seu tabuleiro real!)
 
 # --- Câmera ---
