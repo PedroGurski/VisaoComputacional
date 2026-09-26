@@ -1,23 +1,3 @@
-"""
-01_capture_chessboard.py
--------------------------
-ETAPA 1 — Aquisição de dados (equivalente ao "Step 1: data acquisition" dos slides).
-
-Abre a webcam, mostra o feed ao vivo, detecta o tabuleiro de xadrez em tempo real
-e permite salvar um frame sempre que o padrão for encontrado.
-
-Rode este script no SEU computador (com webcam de verdade conectada), não em um
-servidor sem câmera.
-
-Controles:
-  ESPAÇO -> salva o frame atual (só quando o tabuleiro é detectado, contorno verde)
-  ESC    -> encerra a captura
-
-Recomendação (como nos slides): capture 15-20 imagens variando pose, distância
-e inclinação do tabuleiro, cobrindo todas as regiões da imagem (cantos, bordas,
-centro), para uma calibração precisa.
-"""
-
 import cv2
 import os
 import sys

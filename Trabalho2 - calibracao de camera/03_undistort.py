@@ -1,11 +1,3 @@
-"""
-03_undistort.py
-
-Remove a distorção de TODAS as imagens presentes em:
-
-data/imgs/<camera>/
-"""
-
 import glob
 import os
 

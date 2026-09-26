@@ -1,19 +1,3 @@
-"""
-02_calibrate_camera.py
-
-Calibra automaticamente todas as câmeras presentes em:
-
-data/imgs/<camera>/
-
-Exemplo:
-
-data/imgs/
-├── leftcamera/
-└── rightcamera/
-
-Cada câmera recebe sua própria calibração.
-"""
-
 import glob
 import os
 

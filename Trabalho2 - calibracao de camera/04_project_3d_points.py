@@ -1,10 +1,3 @@
-"""
-04_project_3d_points.py
-
-Realiza a projeção 3D -> 2D automaticamente
-para todas as imagens de todas as câmeras.
-"""
-
 import csv
 import glob
 import os
