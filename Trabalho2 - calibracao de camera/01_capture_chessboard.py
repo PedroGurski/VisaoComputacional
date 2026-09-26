@@ -1,75 +1,94 @@
-import cv2
+"""
+config.py
+---------
+Configurações compartilhadas do projeto.
+"""
+
 import os
-import sys
-
-from config import BOARD_COLS, BOARD_ROWS, CAM_INDEX, CAPTURAS_DIR
+import cv2
 
 
-def main():
-    pattern_size = (BOARD_COLS, BOARD_ROWS)
+# Número de CANTOS INTERNOS
+BOARD_COLS = 11
+BOARD_ROWS = 7
 
-    cap = cv2.VideoCapture(CAM_INDEX)
-    if not cap.isOpened():
-        print(f"Não foi possível abrir a câmera de índice {CAM_INDEX}.")
-        sys.exit(1)
+# Tamanho físico de cada quadrado
+SQUARE_SIZE_MM = 25.0
 
-    count = len(
-        [f for f in os.listdir(CAPTURAS_DIR) if f.lower().endswith((".png", ".jpg"))]
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Fonte principal das imagens
+DATA_DIR = os.path.join(BASE_DIR, "data", "imgs")
+
+# Resultados das calibrações
+CALIB_DATA_DIR = os.path.join(BASE_DIR, "calib_data")
+
+# Resultados visuais
+SAIDA_DIR = os.path.join(BASE_DIR, "saida")
+
+
+os.makedirs(DATA_DIR, exist_ok=True)
+os.makedirs(CALIB_DATA_DIR, exist_ok=True)
+os.makedirs(SAIDA_DIR, exist_ok=True)
+
+
+CORNER_SUBPIX_CRITERIA = (
+    cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER,
+    30,
+    0.001,
+)
+
+
+def get_camera_dirs():
+    """
+    Procura automaticamente todas as subpastas dentro de data/imgs.
+
+    Exemplo:
+
+    data/imgs/
+        leftcamera/
+        rightcamera/
+    """
+
+    if not os.path.exists(DATA_DIR):
+        return []
+
+    cameras = []
+
+    for nome in sorted(os.listdir(DATA_DIR)):
+
+        caminho = os.path.join(
+            DATA_DIR,
+            nome
+        )
+
+        if os.path.isdir(caminho):
+            cameras.append(
+                (nome, caminho)
+            )
+
+    return cameras
+
+
+def get_calibration_file(camera_name):
+
+    return os.path.join(
+        CALIB_DATA_DIR,
+        f"calibracao_{camera_name}.npz"
     )
-    print("Pressione ESPAÇO para salvar um frame (quando o contorno estiver verde).")
-    print("Pressione ESC para sair.")
-
-    while True:
-        ok, frame = cap.read()
-        if not ok:
-            print("Falha ao ler frame da câmera.")
-            break
-
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-        # Flags que aceleram e estabilizam a detecção
-        flags = (
-            cv2.CALIB_CB_ADAPTIVE_THRESH
-            + cv2.CALIB_CB_NORMALIZE_IMAGE
-            + cv2.CALIB_CB_FAST_CHECK
-        )
-        found, corners = cv2.findChessboardCorners(gray, pattern_size, flags=flags)
-
-        display = frame.copy()
-        cv2.drawChessboardCorners(display, pattern_size, corners, found)
-
-        status = f"Capturas salvas: {count}"
-        color = (0, 200, 0) if found else (0, 0, 255)
-        cv2.putText(
-            display, status, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 2
-        )
-        cv2.putText(
-            display,
-            "ESPACO=salvar  ESC=sair",
-            (10, 60),
-            cv2.FONT_HERSHEY_SIMPLEX,
-            0.6,
-            (255, 255, 255),
-            2,
-        )
-
-        cv2.imshow("Captura - Calibracao", display)
-        key = cv2.waitKey(1) & 0xFF
-
-        if key == 27:  # ESC
-            break
-        elif key == 32 and found:  # ESPACO
-            path = os.path.join(CAPTURAS_DIR, f"img_{count:03d}.png")
-            cv2.imwrite(path, frame)
-            print(f"Salvo: {path}")
-            count += 1
-
-    cap.release()
-    cv2.destroyAllWindows()
-    print(f"\nTotal de imagens capturadas: {count}")
-    print(f"Pasta: {CAPTURAS_DIR}")
-    print("Agora rode: python3 02_calibrate_camera.py")
 
 
-if __name__ == "__main__":
-    main()
+def get_output_dir(camera_name):
+
+    caminho = os.path.join(
+        SAIDA_DIR,
+        camera_name
+    )
+
+    os.makedirs(
+        caminho,
+        exist_ok=True
+    )
+
+    return caminho
