@@ -73,7 +73,6 @@ print(pd.DataFrame({"frequência": freq,
 
 # Relação comprimento x largura (sépala e pétala) por categoria
 
-
 def relacao(x, y, nome, arquivo):
     titulo(f"RELAÇÃO {nome.upper()}: comprimento x largura")
     fig, ax = plt.subplots(figsize=(7, 5))
