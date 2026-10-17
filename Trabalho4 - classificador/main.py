@@ -156,7 +156,7 @@ print(pd.Series(sep).sort_values(ascending=False).round(1).to_string())
 titulo("5. PCA (Principal Component Analysis)")
 
 X = df[FEATURES].values
-y = df["class"].values
+y = df["class"].to_numpy(dtype=object)
 X_pad = StandardScaler().fit_transform(X)  # PCA exige variáveis na mesma escala
 
 pca = PCA(n_components=4).fit(X_pad)
